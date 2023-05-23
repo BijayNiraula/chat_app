@@ -31,12 +31,11 @@ function App() {
 
 
   },[])
-  if(!state){
+  if(!state.name){
     return(
 
       <div className=" join-room d-flex align-items-center justify-content-center row">
-         <ToastContainer />
-        <div className="col-3 py-2   border border-dark border-3 " >
+        <div className="col-md-3 col-10 py-2   border border-dark border-3 " >
          <h3 className="text-center fw-bold text-secondary">
           Join Room
          </h3>

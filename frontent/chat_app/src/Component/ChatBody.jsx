@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import tune from "../assets/ring.wav"
 import { ToastContainer, toast } from 'react-toastify';
+import { InfinitySpin } from 'react-loader-spinner'
 import { memo } from 'react';
   const sound=()=>{
     
@@ -11,10 +12,26 @@ import { memo } from 'react';
      audio.play();
   }
 
+ 
+
 function ChatBody(props) {
   const [messages, setMessages] = useState([]);
   const chatArea=useRef()
- 
+ const loader=useRef()
+  const fetchOldMessage=async(info)=>{
+    const fetchData= await fetch("http://localhost:8000",{
+      method:"POST",
+      body:info,
+      headers:{
+        'Content-Type':"application/json"
+      }
+      
+     })
+     const data=await fetchData.json();
+    setMessages(data)
+    loader.current.style.display="none"
+    
+  }
   const logout=()=>{
     localStorage.removeItem("info")
      props.setstate(false)
@@ -34,7 +51,6 @@ function ChatBody(props) {
   
 
 useEffect(()=>{
-  console.log("chatiiiing")
 
   props.socket.on("receive_message",(message)=>{
     //  chatArea.current.insertAdjacentHTML('beforeend', `<div id="box></div>`);
@@ -48,13 +64,18 @@ useEffect(()=>{
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
-        closeOnClick: true,
+        closeOnClick: true, 
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "colored",
         })
     })
+
+    const data=    fetchOldMessage(localStorage.getItem('info'));
+    console.log(data)
+
+  
 },[])
  
    useEffect(()=>{
@@ -65,7 +86,15 @@ useEffect(()=>{
 
    console.log("rerender")
   return (
-  <div className="border-dark row width-100vh  chat-body    d-flex justify-content-center align-items-center">
+  <div className="border-dark row width-100vh  chat-body    d-flex justify-content-center ">
+    <div className="loader" ref={loader} style={{display:"flex"}}>
+    <InfinitySpin 
+  width='200'
+  color="red"
+
+/>
+
+    </div>
    <div className='col-md-6 col-11  border border-dark border-3 body border-dark p-0  ' >
    <div className="w-100 bg-dark  row text-light fs-4 ps-3 w-100  py-1 ">
    <div className="col-6">
@@ -113,6 +142,7 @@ Logout
    </form>
 </div>
    </div>
+   
   </div>
   )
 }
