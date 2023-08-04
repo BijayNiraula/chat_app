@@ -19,3 +19,11 @@ The Chat App is built using the following technologies:
 - MongoDB
 - WebSockets
 
+## Credits
+Developed by [Bijay niraula](https://github.com/BijayNiraula)
+
+
+
+## Acknowledgments
+- Thank you to the developers of the libraries and frameworks used in this project.
+- Special thanks to the open-source community for their continuous support and contributions.
